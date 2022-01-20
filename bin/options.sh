@@ -1,6 +1,6 @@
 #!/bin/sh
 PROJECT_FOLDER=$(pwd)
-FDC_LINKS=/opt/fdc/bin/links
+FDC_LINKS=/opt/fdc.d/bin/links
 
 source "$FDC_LINKS/invalid_project-link.sh"
 source "$FDC_LINKS/help-link.sh"
@@ -14,25 +14,32 @@ if [ ! -r "$PROJECT_FOLDER/manifest.yml" ]; then
 fi
 
 
-
-while getopts ":hds:" option; do
+DEPLOY_FLAG="true"
+while getopts ":hd:s:" option; do
    case $option in
-      h) # display Help
-	Help
-        exit;;
-
-      d) # Deploy option
-	APP_NAME=$OPTARG;;
-
-      s) # Change server deployment
-	Server
-	exit;;
-
      \?) # Invalid option
+	DEPLOY_FLAG="false"
         echo "Error: Invalid option"
         Help
 	exit;;
+
+
+
+      h) # display Help
+	DEPLOY_FLAG="false"
+	Help;;
+
+      s) # Change server deployment
+	DEPLOY_FLAG="false"
+	echo "Server Section: $OPTARG";;
+
+	## Need to be the last one
+      d) # Deploy option
+	APP_NAME=$OPTARG
+	DEPLOY_FLAG="true";;
    esac
 done
 
-Deploy $APP_NAME
+if [ $DEPLOY_FLAG != "false" ]; then
+	Deploy $APP_NAME
+fi

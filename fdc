@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Include Links
-source /opt/fdc/bin/links/options-link.sh
+source /opt/fdc.d/bin/links/options-link.sh

@@ -1,0 +1,4 @@
+application:
+	name: API-Gateway
+	path: /build/libs/*.jar
+	port: 8080
